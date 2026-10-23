@@ -7,6 +7,7 @@ class Album:
     artists: list[str]
     genres: list[str]
     year: int | None
+    description: str = ""
 
 
 @dataclass(frozen=True)
@@ -44,3 +45,13 @@ class RatedAlbum:
     artists: list[str]
     year: int | None
     score: int
+
+@dataclass(frozen=True)
+class Signals:
+    cosine: float | None
+    artist_delta: float | None
+    liked_genre_hits: int
+    genre_delta: float
+    era_hits: int
+    peer_delta: float
+    peer_count: int
