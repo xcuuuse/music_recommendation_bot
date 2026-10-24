@@ -29,6 +29,13 @@ class UserRepository:
             taste_vector=r["taste"],
             liked_genres=list(r["liked_genres"])
         )
+    async def set_taste(self, user_id: int, taste: list[float] | None) -> None:
+        await self._run(
+            "MATCH (u:User {id: $user_id}) SET u.taste = $taste",
+            write=True,
+            user_id=user_id,
+            taste=taste,
+        )
 
     async def exists(self, user_id: int) -> bool:
         rows = await self._run(
