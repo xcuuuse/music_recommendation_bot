@@ -2,7 +2,7 @@ from typing import Any
 from neo4j import AsyncDriver, RoutingControl
 
 
-from src.recommendation.queries import GET_USER, UPSERT_USER, RATE, SET_GENRES, SKIP, HISTORY
+from src.recommendation.user_queries import GET_USER, UPSERT_USER, RATE, SET_GENRES, SKIP, HISTORY
 
 from src.base.entities import RatedAlbum, User
 
