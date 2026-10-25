@@ -1,7 +1,7 @@
 class Embedder:
     def __init__(self, model_name: str):
         from sentence_transformers import SentenceTransformer
-        self._model = SentenceTransformer(model_name, device="gpu")
+        self._model = SentenceTransformer(model_name, device="cpu")
         self._use_prefixes = "e5" in model_name.lower()
 
     def _prefix(self, kind: str) -> str:
