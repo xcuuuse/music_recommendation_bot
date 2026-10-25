@@ -3,9 +3,9 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import BotCommand, Message
 
-from src.bot.cards import history_text
-from src.base.exceptions import UserNotFoundError
-from src.services.recommender import Recommender
+from bot.bot.cards import history_text
+from bot.base.exceptions import UserNotFoundError
+from bot.services.recommender import Recommender
 
 NEED_START = "Press /start"
 

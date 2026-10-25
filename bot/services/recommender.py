@@ -2,14 +2,14 @@ import asyncio
 
 from pip._internal.resolution.resolvelib import candidates
 
-from src.base.entities import User
-from src.base.entities import RatedAlbum, Album, AlbumScore
-from src.base.exceptions import UserNotFoundError, NothingToRecommendError
-from src.base.taste import centroid, update_taste
-from src.recommendation.users import UserRepository
-from src.recommendation.albums import AlbumRepository
-from src.recommendation.embedder import Embedder
-from src.base.scoring import Weights, DEFAULT_WEIGHTS, rank
+from bot.base.entities import User
+from bot.base.entities import RatedAlbum, Album, AlbumScore
+from bot.base.exceptions import UserNotFoundError, NothingToRecommendError
+from bot.base.taste import centroid, update_taste
+from bot.recommendation.users import UserRepository
+from bot.recommendation.albums import AlbumRepository
+from bot.recommendation.embedder import Embedder
+from bot.base.scoring import Weights, DEFAULT_WEIGHTS, rank
 
 
 class Recommender:

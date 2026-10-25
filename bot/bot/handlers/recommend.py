@@ -6,12 +6,12 @@ from aiogram.filters import Command, CommandObject
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
-from src.bot.cards import recommendation_card, search_card
-from src.bot.handlers.common import NEED_START
-from src.bot.keyboards import NextAlbum, Noop, Rate, Skip, rated_keyboard, rating_keyboard
-from src.bot.states import Search
-from src.base.exceptions import AlbumNotFoundError, NothingToRecommendError, UserNotFoundError
-from src.services.recommender import Recommender
+from bot.bot.cards import recommendation_card, search_card
+from bot.bot.handlers.common import NEED_START
+from bot.bot.keyboards import NextAlbum, Noop, Rate, Skip, rated_keyboard, rating_keyboard
+from bot.bot.states import Search
+from bot.base.exceptions import AlbumNotFoundError, NothingToRecommendError, UserNotFoundError
+from bot.services.recommender import Recommender
 
 router = Router(name="recommend")
 

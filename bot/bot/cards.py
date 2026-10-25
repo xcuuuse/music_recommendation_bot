@@ -2,7 +2,7 @@ from html import escape
 
 from neo4j._codec.hydration.http.v2 import vector
 
-from src.base.entities import Album, AlbumScore, RatedAlbum
+from bot.base.entities import Album, AlbumScore, RatedAlbum
 
 DESCRIPTION_LIMIT = 500
 

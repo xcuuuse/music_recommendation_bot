@@ -6,12 +6,12 @@ from aiogram.filters import Command, CommandStart, StateFilter
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
-from src.bot.handlers.common import NEED_START
-from src.bot.handlers.recommend import send_recommendation
-from src.bot.keyboards import MAX_GENRES, GenresDone, GenreToggle, genres_keyboard
-from src.bot.states import EditGenres, OnBoarding
-from src.base.exceptions import UserNotFoundError
-from src.services.recommender import Recommender
+from bot.bot.handlers.common import NEED_START
+from bot.bot.handlers.recommend import send_recommendation
+from bot.bot.keyboards import MAX_GENRES, GenresDone, GenreToggle, genres_keyboard
+from bot.bot.states import EditGenres, OnBoarding
+from bot.base.exceptions import UserNotFoundError
+from bot.services.recommender import Recommender
 
 router = Router(name="onboarding")
 
