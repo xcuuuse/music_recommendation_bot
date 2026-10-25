@@ -2,9 +2,9 @@ from typing import Any
 from neo4j import AsyncDriver, RoutingControl
 
 
-from bot.recommendation.user_queries import GET_USER, UPSERT_USER, RATE, SET_GENRES, SKIP, HISTORY
+from src.recommendation.user_queries import GET_USER, UPSERT_USER, RATE, SET_GENRES, SKIP, HISTORY
 
-from bot.base.entities import RatedAlbum, User
+from src.base.entities import RatedAlbum, User
 
 class UserRepository:
     def __init__(self, driver: AsyncDriver):

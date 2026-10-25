@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 import random
-from bot.base.entities import Signals, AlbumScore, Album
+from src.base.entities import Signals, AlbumScore, Album
 
 @dataclass(frozen=True)
 class Weights:
