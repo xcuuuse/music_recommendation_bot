@@ -11,7 +11,7 @@ from pathlib import Path
 import pandas as pd
 from neo4j import GraphDatabase
 
-from bot.config import Settings
+from recbot.config import Settings
 
 CONSTRAINTS = [
     "CREATE CONSTRAINT album_id IF NOT EXISTS FOR (a:Album) REQUIRE a.id IS UNIQUE",
@@ -53,9 +53,11 @@ FOREACH (_ IN CASE WHEN row.decade IS NULL THEN [] ELSE [1] END |
 WITH a, row
 UNWIND row.artists AS artist
 MERGE (ar:Artist {name: artist.name})
-MERGE (c:Country {name: artist.country})
-MERGE (ar)-[:FROM]->(c)
 MERGE (a)-[:PERFORMED_BY]->(ar)
+FOREACH (_ IN CASE WHEN artist.country IS NULL THEN [] ELSE [1] END |
+    MERGE (c:Country {name: artist.country})
+    MERGE (ar)-[:FROM]->(c)
+)
 
 WITH DISTINCT a, row
 UNWIND row.genres AS genre_name
@@ -84,8 +86,11 @@ def read_albums(path: Path, known_genres: set[str]) -> list[dict]:
     for _, r in df.iterrows():
         artists = split(r["artists"])
         countries = split(r["countries"])
-        # Страны идут в том же порядке, что и исполнители; одна страна — на всех.
-        if len(countries) == 1:
+        # Страны идут в том же порядке, что и исполнители; одна страна — на всех,
+        # пустая ячейка — страна неизвестна (узел Country не создаётся).
+        if not countries:
+            countries = [None] * len(artists)
+        elif len(countries) == 1:
             countries *= len(artists)
         if len(countries) != len(artists):
             raise ValueError(f"Альбом {r['id']}: исполнителей и стран разное количество")
@@ -134,7 +139,7 @@ def main() -> None:
     print(f"Прочитано: {len(genres)} жанров, {len(albums)} альбомов")
 
     if not args.no_embeddings:
-        from bot.recommendation.embedder import Embedder
+        from recbot.infra.embedder import Embedder
 
         print(f"Считаю эмбеддинги моделью {settings.embedding_model}…")
         vectors = Embedder(settings.embedding_model).embed_passages(
