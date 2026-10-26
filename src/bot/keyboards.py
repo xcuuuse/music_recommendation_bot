@@ -40,7 +40,7 @@ def genres_keyboard(all_genres: list[str], selected: list[str]) -> InlineKeyboar
 def rating_keyboard(album_id: int) -> InlineKeyboardMarkup:
     kb = InlineKeyboardBuilder()
     for score in range(1, 6):
-        kb.button(text=f"{score}", callback_data=Rate(album_id=album_id, score=score))
+        kb.button(text=f"{score}★", callback_data=Rate(album_id=album_id, score=score))
     kb.button(text="Пропустить", callback_data=Skip(album_id=album_id))
     kb.adjust(5, 1)
     return kb.as_markup()
