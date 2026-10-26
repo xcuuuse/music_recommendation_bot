@@ -5,7 +5,7 @@ from src.base.entities import Signals, AlbumScore, Album
 @dataclass(frozen=True)
 class Weights:
     vector: float = 1.0
-    artist: float = 1.0
+    artist: float = 0.15
     onboarding_per_genre: float = 0.15
     onboarding_cap: float = 0.3
     genre: float = 0.1

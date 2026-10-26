@@ -4,7 +4,7 @@ from neo4j import AsyncDriver, RoutingControl
 from src.recommendation.album_queries import CANDIDATES_QUERY, SEARCH_QUERY, ROOT_GENRES_QUERY, GENRE_EMBEDDINGS_QUERY
 
 from src.base.entities import Album, Signals
-from src.base.exceptions import RecordNotFoundError, AlbumNotFoundError
+from src.base.exceptions import AlbumNotFoundError
 
 
 def _album(row: dict[str, Any]) -> Album:

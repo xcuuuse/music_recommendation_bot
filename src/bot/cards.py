@@ -1,7 +1,5 @@
 from html import escape
 
-from neo4j._codec.hydration.http.v2 import vector
-
 from src.base.entities import Album, AlbumScore, RatedAlbum
 
 DESCRIPTION_LIMIT = 500
@@ -26,7 +24,7 @@ def _reasons(album: Album, score: AlbumScore) -> list[str]:
         reasons.append("🎯 по описанию - один из самых близких к вашему вкусу")
     elif score.vector_score >= 0.5:
         reasons.append("🎯 по описанию похож на то, что вам нравится")
-    elif score.artist_score > 0:
+    if score.artist_score > 0:
         reasons.append("❤️ вам нравится этот исполнитель")
     elif score.artist_score < 0:
         reasons.append("🤔 прошлые альбомы исполнителя вам не очень зашли - но вдруг этот")
@@ -70,6 +68,6 @@ def history_text(items: list[RatedAlbum]) -> str:
     for it in items:
         year = f", {it.year}" if it.year else ""
         lines.append(
-            f"{stars(it.score)} {escape(it.title)} - {escape(it.title)} - {escape(', '.join(it.artists))}{year}"
+            f"{stars(it.score)} {escape(it.title)} - {escape(', '.join(it.artists))}{year}"
         )
     return '\n'.join(lines)
