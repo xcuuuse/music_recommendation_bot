@@ -15,17 +15,17 @@ def update_taste(taste: list[float], album: list[float], score: int) -> list[flo
         if step < 0:
             return None
         result = _normalize(album)
-        return None if not result else result.tolist()
+        return result if result is None else result.tolist()
     user = np.asarray(taste, dtype=np.float32)
     if step > 0:
         new = (1.0 - step) * user + step * album
     else:
         new = user + step * album
     result = _normalize(new)
-    return taste if not result else result.tolist()
+    return taste if result is None else result.tolist()
 
 def centroid(vectors: list[list[float]]) -> list[float] | None:
     if not vectors:
         return None
     result = _normalize(np.asarray(vectors, dtype=np.float32).mean(axis=0))
-    return None if not result else result.tolist()
+    return result if result is None else result.tolist()

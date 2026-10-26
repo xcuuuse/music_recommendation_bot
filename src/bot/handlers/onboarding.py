@@ -93,7 +93,7 @@ async def _finish_onboarding(
 async def mood_skip(message: Message, state: FSMContext, service: Recommender) -> None:
     await _finish_onboarding(message, state, service, mood=None)
     
-@router.message(OnBoarding.mood, F.tet, ~F.text.startswith("/"))
+@router.message(OnBoarding.mood, F.text, ~F.text.startswith("/"))
 async def mood_text(message: Message, state: FSMContext, service: Recommender) -> None:
     await _finish_onboarding(message, state, service, mood=message.text.strip()) 
     

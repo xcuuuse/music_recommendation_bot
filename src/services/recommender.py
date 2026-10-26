@@ -1,6 +1,5 @@
 import asyncio
 
-from pip._internal.resolution.resolvelib import candidates
 
 from src.base.entities import User
 from src.base.entities import RatedAlbum, Album, AlbumScore
@@ -64,7 +63,7 @@ class Recommender:
     async def next_album(self, user_id: int) -> tuple[Album, AlbumScore]:
         await self._require_user(user_id)
         user_candidates = await self.albums.candidates(user_id)
-        if not candidates:
+        if not user_candidates:
             raise NothingToRecommendError("All albums are already rated or skipped")
         return rank(user_candidates, self.weights)[0]
 

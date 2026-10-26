@@ -1,16 +1,17 @@
 from typing import Any
 from neo4j import AsyncDriver, RoutingControl
-from sympy.printing import aesaracode
 
 from src.recommendation.album_queries import CANDIDATES_QUERY, SEARCH_QUERY, ROOT_GENRES_QUERY, GENRE_EMBEDDINGS_QUERY
 
 from src.base.entities import Album, Signals
-from src.base.exceptions import RecordNotFoundError
+from src.base.exceptions import RecordNotFoundError, AlbumNotFoundError
+
 
 def _album(row: dict[str, Any]) -> Album:
     return Album(
         id=row["id"],
         title=row["title"],
+        artists=list(row["artists"]),
         genres=row["genres"],
         year=row["year"],
         description=row["description"] or ""
@@ -56,7 +57,7 @@ class AlbumRepository:
             "MATCH (a:Album {id: $id}) RETURN a.embedding AS embedding", id=album_id
         )
         if not rows:
-            raise RecordNotFoundError(f"Album {album_id} not found")
+            raise AlbumNotFoundError(f"Album {album_id} not found")
         return rows[0]["embedding"]
 
     async def root_genres(self) -> list[str]:
