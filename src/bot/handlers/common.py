@@ -25,7 +25,8 @@ HELP = (
     "<i>/search мрачный и холодный, как зима в спальном районе</i>\n"
     "/genres — изменить любимые жанры\n"
     "/rated — история ваших оценок\n"
-    "/cancel — отменить текущее действие\n\n"
+    "/cancel — отменить текущее действие\n"
+    "/reset - удалить все данные\n\n"
     "Чем больше альбомов вы оцените, тем точнее рекомендации: "
     "я учитываю исполнителей, жанры, десятилетия и оценки людей с похожим вкусом."
 )
@@ -58,3 +59,10 @@ async def rated(msg: Message, service: Recommender) -> None:
 @fallback_router.message()
 async def fallback(msg: Message) -> None:
     await msg.answer("Попробуйте /recommend или /help")
+
+
+@router.message(Command("reset"))
+async def reset(message: Message, state: FSMContext, service: Recommender):
+    await state.clear()
+    await service.users.delete(message.from_user.id)
+    await message.answer("Профиль и все оценки удалены. Заново - /start")

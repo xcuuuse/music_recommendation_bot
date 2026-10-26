@@ -2,7 +2,7 @@ from typing import Any
 from neo4j import AsyncDriver, RoutingControl
 
 
-from src.recommendation.user_queries import GET_USER, UPSERT_USER, RATE, SET_GENRES, SKIP, HISTORY, MARK_RECOMMENDED
+from src.recommendation.user_queries import GET_USER, UPSERT_USER, RATE, SET_GENRES, SKIP, HISTORY, MARK_RECOMMENDED, DELETE_USER
 
 from src.base.entities import RatedAlbum, User
 
@@ -89,6 +89,9 @@ class UserRepository:
             for row in rows
         ]
     
-async def mark_recommended(self, user_id: int, album_id: int, score: float) -> None:
-    await self._run(MARK_RECOMMENDED, write=True,
-                    user_id=user_id, album_id=album_id, score=score)
+    async def mark_recommended(self, user_id: int, album_id: int, score: float) -> None:
+        await self._run(MARK_RECOMMENDED, write=True,
+                        user_id=user_id, album_id=album_id, score=score)
+    
+    async def delete(self, user_id: int):
+        await self._run(DELETE_USER, write=True, user_id=user_id)

@@ -57,3 +57,5 @@ MERGE (u)-[r:RECOMMENDED]->(a)
 ON CREATE SET r.first_at = datetime(), r.times = 0
 SET r.last_at = datetime(), r.times = r.times + 1, r.score = $score
 """
+
+DELETE_USER = "MATCH (u:User {id: $user_id}) DETACH DELETE u"
