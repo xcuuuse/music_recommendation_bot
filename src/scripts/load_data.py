@@ -11,7 +11,7 @@ from pathlib import Path
 import pandas as pd
 from neo4j import GraphDatabase
 
-from recbot.config import Settings
+from src.config import Settings
 
 CONSTRAINTS = [
     "CREATE CONSTRAINT album_id IF NOT EXISTS FOR (a:Album) REQUIRE a.id IS UNIQUE",
@@ -139,7 +139,7 @@ def main() -> None:
     print(f"Прочитано: {len(genres)} жанров, {len(albums)} альбомов")
 
     if not args.no_embeddings:
-        from recbot.infra.embedder import Embedder
+        from src.recommendation.embedder import Embedder
 
         print(f"Считаю эмбеддинги моделью {settings.embedding_model}…")
         vectors = Embedder(settings.embedding_model).embed_passages(
