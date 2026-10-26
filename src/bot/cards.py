@@ -5,7 +5,7 @@ from src.base.entities import Album, AlbumScore, RatedAlbum
 DESCRIPTION_LIMIT = 500
 
 def _album_header(album: Album) -> list[str]:
-    artists = escape(", ".join(album.artists)) or "unknown author"
+    artists = escape(", ".join(album.artists)) or "неизвестный исполнитель"
     year = f" ({album.year})" if album.year else ""
     lines = [f"💿 <b>{escape(album.title)}</b>{year}", f"🎤 {artists}"]
     if album.genres:
@@ -42,7 +42,7 @@ def recommendation_card(album: Album, score: AlbumScore) -> str:
     parts = _album_header(album)
     if album.description:
         parts += ["", _description(album)]
-    parts += ["", "<b>This album, cause:</b>"]
+    parts += ["", "<b>Этот альбом может подойти, потому что:</b>"]
     parts += [f"• {r}" for r in _reasons(album, score)]
     parts += ["", f"<i>Total score: {score.total:.2f}</i>"]
     return "\n".join(parts)
@@ -52,7 +52,7 @@ def search_card(album: Album, others: list[Album]) -> str:
     if album.description:
         parts += ["", _description(album)]
     if others:
-        parts += ["", "<b>You can also like:</b>"]
+        parts += ["", "<b>Вам также может понравиться:</b>"]
         parts += [
             f". {escape(a.title)} - {escape(', '.join(a.artists))}" for a in others
         ]
@@ -63,8 +63,8 @@ def stars(score: int) -> str:
 
 def history_text(items: list[RatedAlbum]) -> str:
     if not items:
-        return "Start rating with /recommend"
-    lines = ["<b>Your latest ratings:</b>", ""]
+        return "Начните оценивание с /recommend"
+    lines = ["<b>Ваши последние оценки:</b>", ""]
     for it in items:
         year = f", {it.year}" if it.year else ""
         lines.append(

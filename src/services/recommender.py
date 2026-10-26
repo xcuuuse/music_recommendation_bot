@@ -65,7 +65,9 @@ class Recommender:
         user_candidates = await self.albums.candidates(user_id)
         if not user_candidates:
             raise NothingToRecommendError("All albums are already rated or skipped")
-        return rank(user_candidates, self.weights)[0]
+        album, score = rank(user_candidates, self.weights)[0]
+        await self.users.mark_recommended(user_id, album.id, score.total)
+        return album, score
 
     async def search(self, user_id: int, text: str, limit: int = 3) -> list[tuple[Album, float]]:
         await self._require_user(user_id)

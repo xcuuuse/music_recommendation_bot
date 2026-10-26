@@ -50,3 +50,10 @@ RETURN a.id AS id, a.title AS title, a.year AS year, r.score AS score,
 ORDER BY r.updated_at DESC
 LIMIT $limit
 """
+
+MARK_RECOMMENDED = """
+MATCH (u:User {id: $user_id}), (a:Album {id: $album_id})
+MERGE (u)-[r:RECOMMENDED]->(a)
+ON CREATE SET r.first_at = datetime(), r.times = 0
+SET r.last_at = datetime(), r.times = r.times + 1, r.score = $score
+"""
