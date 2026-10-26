@@ -22,7 +22,7 @@ async def send_recommendation(target: Message, user_id: int, service: Recommende
         await target.answer(NEED_START)
         return
     except NothingToRecommendError:
-        await target.answer("You have listened to all of the albums. Ratings - /rated")
+        await target.answer("Вы прослушали все доступные альбомы. Оценки - /rated")
         return
     await target.answer(
         recommendation_card(album, score), reply_markup=rating_keyboard(album.id)
@@ -56,10 +56,10 @@ async def rate(cb: CallbackQuery, callback_data: Rate, service: Recommender) -> 
         await cb.answer(NEED_START, show_alert=True)
         return
     except AlbumNotFoundError:
-        await cb.answer("This album is no longer in base", show_alert=True)
+        await cb.answer("Альбом больше не находится в базе", show_alert=True)
         return
 
-    await cb.answer("Your rating is saved")
+    await cb.answer("Оценка сохранена")
     if isinstance(cb.message, Message):
         with suppress(TelegramBadRequest):
             await cb.message.edit_reply_markup(reply_markup=rated_keyboard(callback_data.score))
@@ -72,7 +72,7 @@ async def skip(cb: CallbackQuery, callback_data: Skip, service: Recommender) -> 
         await cb.answer(NEED_START, show_alert=True)
         return
 
-    await cb.answer("Skip this")
+    await cb.answer("Пропустить")
     if isinstance(cb.message, Message):
         with suppress(TelegramBadRequest):
             await cb.message.delete()
@@ -90,7 +90,7 @@ async def _do_search(message: Message, text: str, service: Recommender) -> None:
         await wait.delete()
 
     if not results:
-        await message.answer("Nothing found. Try another description")
+        await message.answer("Ничего не найдено. Попробуйте другое описание")
         return
     best, *rest = [album for album, _ in results]
     await message.answer(search_card(best, rest), reply_markup=rating_keyboard(best.id))
@@ -99,7 +99,7 @@ async def _do_search(message: Message, text: str, service: Recommender) -> None:
 async def search_cmd(
     message: Message, command: CommandObject, state: FSMContext, service: Recommender
 ) -> None:
-    if not await service.is_registered(message.from_user.id):  # type: ignore[union-attr]
+    if not await service.is_registered(message.from_user.id):
         await message.answer(NEED_START)
         return
 

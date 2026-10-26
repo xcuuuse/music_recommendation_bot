@@ -23,15 +23,15 @@ MOOD_PROMPT = (
 @router.message(CommandStart())
 async def start(message: Message, state: FSMContext, service: Recommender) -> None:
     await state.clear()
-    if await service.is_registered(message.from_user.id):  # type: ignore[union-attr]
-        await message.answer("Hello! 🎧 /recommend - new recommendation, /help - commands")
+    if await service.is_registered(message.from_user.id):
+        await message.answer("Привет! 🎧 /recommend - новая рекомендация, /help - справка")
         return
 
     await state.set_state(OnBoarding.genres)
     await state.update_data(selected=[])
     await message.answer(
-        "Hi! I can search albums based on your taste & mood.\n\n"
-        f"<b>1/2.</b> Select no more than {MAX_GENRES} fav genres:",
+        "Привет! Я могу искать альбомы, основываясь на вашем настроении и вкусе.\n\n"
+        f"<b>1/2.</b> Выберите не более {MAX_GENRES} любимых жанров:",
         reply_markup=genres_keyboard(await service.root_genres(), []),
     )
     
@@ -46,10 +46,10 @@ async def edit_genres_done(cb: CallbackQuery, state: FSMContext, service: Recomm
         await cb.answer(NEED_START, show_alert=True)
         return
 
-    await cb.answer("Saved")
+    await cb.answer("Сохранено")
     if isinstance(cb.message, Message):
-        chosen = escape(", ".join(selected)) if selected else "nothing selected"
-        await cb.message.edit_text(f"✅ Fav genres: <i>{chosen}</i>")
+        chosen = escape(", ".join(selected)) if selected else "ничего не выбрано"
+        await cb.message.edit_text(f"✅ Любимые жанры: <i>{chosen}</i>")
         
 @router.message(Command("genres"))
 async def genres_cmd(message: Message, state: FSMContext, service: Recommender) -> None:
@@ -62,14 +62,14 @@ async def genres_cmd(message: Message, state: FSMContext, service: Recommender) 
     await state.set_state(EditGenres.genres)
     await state.update_data(selected=current)
     await message.answer(
-        "Mark your favourite genres:",
+        "Отметьте ваши любимые жанры:",
         reply_markup=genres_keyboard(await service.root_genres(), current),
     )
     
 @router.callback_query(GenresDone.filter(), OnBoarding.genres)
 async def onboarding_genres_done(cb: CallbackQuery, state: FSMContext) -> None:
     if not (await state.get_data()).get("selected"):
-        await cb.answer("Select at least one genre", show_alert=True)
+        await cb.answer("Выберите как минимум один жанр", show_alert=True)
         return
     await state.set_state(OnBoarding.mood)
     await cb.answer()
@@ -81,12 +81,12 @@ async def _finish_onboarding(
 ) -> None:
     user = message.from_user
     genres = (await state.get_data()).get("selected", [])
-    await message.answer("Setting your profile")
+    await message.answer("Настраиваем ваш профиль...")
     try:
         await service.register(user.id, user.username, genres, mood)  # type: ignore[union-attr]
     finally:
         await state.clear()
-    await message.answer("Here's your first recommendation")
+    await message.answer("Ваша первая рекомендация")
     await send_recommendation(message, user.id, service)
     
 @router.message(OnBoarding.mood, Command("skip"))
@@ -114,7 +114,7 @@ async def toggle_genre(
     if name in selected:
         selected.remove(name)
     elif len(selected) >= MAX_GENRES:
-        await cb.answer(f"You can't select genres more than {MAX_GENRES}", show_alert=True)
+        await cb.answer(f"Нельзя выбрать больше {MAX_GENRES} жанров", show_alert=True)
         return
     else:
         selected.append(name)

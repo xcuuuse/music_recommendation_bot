@@ -7,15 +7,15 @@ from src.bot.cards import history_text
 from src.base.exceptions import UserNotFoundError
 from src.services.recommender import Recommender
 
-NEED_START = "Press /start"
+NEED_START = "Нажмите /start"
 
 COMMANDS = [
-    BotCommand(command="recommend", description="Get recommendation"),
-    BotCommand(command="search", description="Find album based on your mood"),
-    BotCommand(command="genres", description="Change fav genres"),
-    BotCommand(command="rated", description="My ratings"),
-    BotCommand(command="help", description="Help"),
-    BotCommand(command="cancel", description="Cancel"),
+    BotCommand(command="recommend", description="Получить рекомендацию"),
+    BotCommand(command="search", description="Найти альбом по настроению"),
+    BotCommand(command="genres", description="Изменить любимые жанры"),
+    BotCommand(command="rated", description="Мои оценки"),
+    BotCommand(command="help", description="Справка"),
+    BotCommand(command="cancel", description="Отмена"),
 ]
 
 HELP = (
@@ -37,7 +37,7 @@ fallback_router = Router(name="fallback")
 @router.message(Command("cancel"))
 async def cancel(msg: Message, state: FSMContext) -> None:
     await state.clear()
-    await msg.answer("Cancelled. /help — список команд")
+    await msg.answer("Отменено. /help - список команд")
 
 
 @router.message(Command("help"))
@@ -57,4 +57,4 @@ async def rated(msg: Message, service: Recommender) -> None:
 
 @fallback_router.message()
 async def fallback(msg: Message) -> None:
-    await msg.answer("Try /recommend or /help")
+    await msg.answer("Попробуйте /recommend или /help")
